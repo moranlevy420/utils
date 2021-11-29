@@ -1,0 +1,32 @@
+alias a='alias'
+
+a cd2cheetah='cd ${HOME}/cheetah/env/linux && source defenv wbox'
+a cd2hypervisor='cd ${HOME}/hypervisor/env/linux && source defenv wbox'
+a cd2dnos_si='cd ${HOME}/dnos_si/env/linux && source defenv wbox'
+a cd2integration='cd ${HOME}/dn-hyper-integration/env/linux && source defenv wbox'
+
+# TAR
+a untar='tar -xvf'
+
+# GIT
+a gbase='git rev-parse --abbrev-ref --symbolic-full-name @{u}|cut -d/ -f2-'
+a grebase='git pull origin $(gbase) --rebase'
+a gpush='git push origin --force-with-lease $(git rev-parse --abbrev-ref HEAD)'
+a gammend='git commit -a --amend --no-edit'
+a gfetch='git fetch origin'
+a gcommitrebasepush='gammend && grebase && gpush'
+a gstashrebasepush='git stash && grebase && gpush' # && git stash pop'
+a gshortlog='git shortlog ...origin/$(gbase)'
+
+# containers
+a make_start_mgmt_env='cd env/linux && source defenv wbox && JOB_URL=$(curl -s http://consul-bridge:8501/v1/kv/latest-docker-image/cheetah/$(cat ${prod_root}/misc/BASE_BRANCH)?raw=true) make start_mgmt_env'
+a restart_mgmt_env='clear_containers && clear_logs && make_start_mgmt_env'
+a start_ipython_mgmt_test_env='make -C src/tests/ run_mgmt_ipython_test_container'
+
+# code
+a lint='make build-mega_lint-in-docker'
+
+a cli='DEV_MODE=1 python3.6 -m cli'
+
+# SSH
+a ssh2kvm16-cl-205a-vm='ssh -p 2222 kvm16-cl-205a-vm'

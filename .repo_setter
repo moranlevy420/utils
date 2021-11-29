@@ -1,0 +1,68 @@
+set_env()
+{
+	# required envs
+	local ENV_BIN=${ENV_BIN:-defenv.wbox}
+	local ENV_ARCH=${ENV_ARCH:-linux}
+	local LAST_REPO_CHOISE=${HOME}/.last_repo_choice
+
+	# prepare repos array
+	local repos
+	# populate available git repositories
+	for f in $(find ${HOME} -maxdepth 1 -type d 2>/dev/null); do
+		if [[ -d $f/.git ]]; then
+			local curr_repo=$(echo $f | rev | tr "/" "\n" | rev | head -n1)
+			repos+=( ${curr_repo} )
+		fi
+	done
+
+	# print available options
+	echo "please choose repository: "
+	for repo_id in ${!repos[@]}; do
+		echo "    $(( ${repo_id} + 1 ))) ${repos[${repo_id}]}"
+	done
+	local choice
+	# get response from user
+	read -n 10 -s choice
+	local repo=
+	if [[ ${choice} =~ ^[0-9]+$ ]]; then
+		repo=${repos[$(( ${choice} - 1 ))]}
+	fi
+
+	# try to get chosen repo
+	local prev_repo=$(cat ${LAST_REPO_CHOISE} 2>/dev/null)
+	if [[ "${repo}" == "" ]]; then
+		if [[ "${choice}" != "" ]]; then
+			echo "invalid choice was made!"
+		fi
+		if [[ "${prev_repo}" != "" ]]; then
+			echo "using last known choice"
+			repo=${prev_repo}
+		else
+			echo "no previous choice exists"
+		fi
+	fi
+
+	if [[ "${repo}" != "" ]]; then
+		# set last choice
+		echo ${repo} > ${LAST_REPO_CHOISE}
+
+		# source custom env-setter, if exists
+		echo "setting current shell to the '${repo}' repository"
+		local repo_path="${HOME}/${repo}"
+		local env_setter=$(find ${repo_path} -name ${ENV_BIN} 2>/dev/null| grep ${ENV_ARCH})
+		if [[ "${env_setter}" != "" ]]; then
+			local folder=$(echo "${env_setter}" | sed -e "s/${ENV_BIN}//" 2>/dev/null)
+			local PREV_IFS=${IFS}
+			IFS=" "
+			local env_arr
+			read -r -a env_arr <<< $(echo ${env_setter} | rev | tr "/" "\n" | rev | head -n1 | tr "." " ")
+			cd ${folder} && source ${env_arr[0]} ${env_arr[1]}
+			IFS=${PREV_IFS}
+		fi
+
+		# move to repos folder
+		cd ${repo_path}
+	fi
+}
+
+set_env

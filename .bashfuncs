@@ -1,0 +1,40 @@
+rmi() {
+    case "${1}" in
+        "*")
+	    local id=""
+	    echo "deleting all images"
+	;;
+	"")
+	    local id="pr-"
+	    echo "deleting all images starting with 'pr-'"
+	;;
+	*)
+            local id=$(echo $1 | sed 's/ *$//g')
+	    echo "deleting all images starting with '${id}'"
+	;;
+    esac
+    local clear=true
+    $([[ "${2}" == "0" ]] || [[ "${2^^}" == "FALSE" ]]) && clear=false
+    $clear && clear_containers
+    images=$(docker image ls -a | grep "${id}")
+    [[ "${images}" == "" ]] && echo "no images to clear" && return 0
+    echo "clearing images:"
+    echo "${images}"
+    docker rmi -f ${images} &>/dev/null
+}
+
+docklear() {
+    clear_containers && clear_logs && echo "deleting /tmp/node_data" && rm -rf /tmp/node_data
+    [[ "${1:-1}" == "1" ]] && echo "deleting core's folder" && sudo rm -rf /core/*
+}
+
+gpush() {
+    pushd /home/dn/cheetah/
+    branch=$(git branch  | grep '*' | awk '{print $2}')
+    git push origin ${branch} $@
+    popd
+}
+
+rmtmp() {
+    rm -rf /home/dn/tmp/* 2>/dev/null
+}
