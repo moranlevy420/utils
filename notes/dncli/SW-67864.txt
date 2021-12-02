@@ -1,0 +1,55 @@
+#HV
+###
+
+configure
+service-instances instance dn_su1 url https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/dev_v0_3/lastSuccessfulBuild/artifact/docker-compose-release.yml/*view*/ si_policy si_ha_dn_su1.cfg
+commit
+service-instances instance dn_su1 interface ge100-0/0/0
+service-instances instance dn_su1 interface ge100-0/0/1
+service-instances instance dn_su1 interface ge100-0/0/2
+service-instances instance dn_su1 interface ge100-0/0/3
+service-instances instance dn_su1 interface ge100-0/0/4
+commit
+
+
+
+
+
+
+#SI
+###
+
+#   in VM:
+docker-enter $(docker ps -f name=dnsistackdn_su1_routing-engin  --format '{{.Names}}')
+#   in RE:
+DEV_MODE=1 python3.6 -m cli
+#   in CLI:
+set cli-timestamp
+configure
+network-services vrf moran_vrf_1
+!
+!
+network-services vrf moran_vrf_2
+!
+!
+access-lists ipv4 moran_acl_ipv4_1
+!
+!
+access-lists ipv4 moran_acl_ipv4_2
+!
+!
+access-lists ipv6 moran_acl_ipv6_1
+!
+!
+access-lists ipv6 moran_acl_ipv6_2
+!
+!
+commit
+
+
+no network-services vrf moran_vrf_2
+no access-lists ipv4 moran_acl_ipv4_2
+no access-lists ipv6 moran_acl_ipv6_2
+commit
+
+
