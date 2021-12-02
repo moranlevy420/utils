@@ -14,6 +14,13 @@ commit
 
 
 
+dbcli /drivenets-top/service-instances/instances/instance/service-instance-resources/ipv4-access-lists/access-list
+dbcli /drivenets-top/service-instances/instances/instance/service-instance-resources/ipv6-access-lists/access-list
+dbcli /drivenets-top/service-instances/instances/instance/service-instance-resources/vrfs/vrf
+
+dbcli /drivenets-top/access-lists/ipv4/access-list
+dbcli /drivenets-top/access-lists/ipv6/access-list
+dbcli /drivenets-top/network-services/vrfs/vrf
 
 
 
