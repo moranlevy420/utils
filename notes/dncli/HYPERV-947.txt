@@ -1,0 +1,25 @@
+#HV
+configure
+service-instances instance dn_su1 url https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/PR-243/25/artifact/docker-compose-release.yml/*view*/ si_policy si_ha_dn_su1.cfg
+commit
+service-instances instance dn_su1 interface ge100-0/0/0
+service-instances instance dn_su1 interface ge100-0/0/1
+service-instances instance dn_su1 interface ge100-0/0/2
+service-instances instance dn_su1 interface ge100-0/0/3
+service-instances instance dn_su1 interface ge100-0/0/4
+commit
+
+#SI
+#   in my vm:
+docker-enter $(docker ps -f name=dnsistackdn_su1_routing-engin  --format '{{.Names}}')
+#   in RE:
+DEV_MODE=1 python3.6 -m cli
+#   in cli:
+set cli-timestamp
+configure
+interfaces lo0 ipv4-address 1.2.3.4/32
+commit
+no interfaces lo0
+commit
+
+
