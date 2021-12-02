@@ -1,6 +1,7 @@
 #HV
 ###
 
+set cli-timestamp
 configure
 service-instances instance dn_su1 url https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/dev_v0_3/lastSuccessfulBuild/artifact/docker-compose-release.yml/*view*/ si_policy si_ha_dn_su1.cfg
 commit
