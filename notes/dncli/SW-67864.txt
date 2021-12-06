@@ -1,3 +1,10 @@
+# Integration:
+
+HYPERV_JOB_URL=https://jenkins.dev.drivenets.net/job/drivenets/job/hypervisor/job/PR-541/5/
+DNOS_SI_JOB_URL=https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/dev_v0_3/lastSuccessfulBuild/
+
+
+
 #HV
 ###
 
@@ -60,4 +67,22 @@ no access-lists ipv4 moran_acl_ipv4_2
 no access-lists ipv6 moran_acl_ipv6_2
 commit
 
+
+'si_1_test_acl_2' in
+d = {'title': 'Access Lists - Ipv4', 'headers': ['Access-list name', 'Index', 'Type', 'Nexthop1', 'Protocol', 'Src Ports', 'Src IP', 'Dest Ports', 'Dest IP', 'Dscp', 'Description'], 'rows': [{'access_list_name': 'si_1_test_acl_2', 'index': '10', 'type': 'allow', 'nexthop1': '', 'protocol': 'any', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}, {'access_list_name': '', 'index': '65534', 'type': 'allow', 'nexthop1': '', 'protocol': 'icmp(0x01)', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}, {'access_list_name': '', 'index': '65535', 'type': 'deny', 'nexthop1': '', 'protocol': 'any-host(0x3D)', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}, {'access_list_name': 'Access Lists - Ipv6'}, {'access_list_name': 'Access-list name', 'index': 'Index', 'type': 'Type', 'nexthop1': 'Nexthop1', 'protocol': 'Protocol', 'src_ports': 'Src Ports', 'src_ip': 'Src IP', 'dest_ports': 'Dest Ports', 'dest_ip': 'Dest IP', 'dscp': 'Dscp', 'description': 'Description'}, {'access_list_name': '--------------------+---------+--------+------------+-----------------+-------------+----------+--------------+-----------+--------+---------------'}, {'access_list_name': 'si_1_test_acl_2', 'index': '10', 'type': 'allow', 'nexthop1': '', 'protocol': 'any', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}, {'access_list_name': '', 'index': '65534', 'type': 'allow', 'nexthop1': '', 'protocol': 'ipv6-icmp(0x3A)', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}, {'access_list_name': '', 'index': '65535', 'type': 'deny', 'nexthop1': '', 'protocol': 'any-host(0x3D)', 'src_ports': 'any', 'src_ip': 'any', 'dest_ports': 'any', 'dest_ip': 'any', 'dscp': '', 'description': ''}]}
+
+
+
+
+
+In [1]: from hyperv.tests import test_ms_acl
+
+In [2]: test_ms_acl.test_acls_cleanup(env_info, hyperv_cli, get_dnos_si_cli, gnmi, get_dnos_si_gnmi)
+
+
+
+
+
+
+In [1]: from hyperv.tests import test_si_vrf;test_si_vrf.test_si_vrf_cleanup(env_info, hyperv_cli, get_dnos_si_cli)
 

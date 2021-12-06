@@ -1,4 +1,5 @@
 #HV
+set cli-timestamp
 configure
 service-instances instance dn_su1 url https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/PR-243/25/artifact/docker-compose-release.yml/*view*/ si_policy si_ha_dn_su1.cfg
 commit
@@ -23,3 +24,8 @@ no interfaces lo0
 commit
 
 
+Branch mlevy/dev_v0_3/HYPERV-947.1
+HYPERV_JOB_URL
+https://jenkins.dev.drivenets.net/job/drivenets/job/hypervisor/job/PR-528/15/
+DNOS_SI_JOB_URL
+https://jenkins.dev.drivenets.net/job/drivenets/job/dnos_si/job/PR-243/26/
